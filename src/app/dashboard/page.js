@@ -1,9 +1,18 @@
 import Image from "next/image";
+import SearchTaskBar from "@/app/components/search-task-bar"
+import ExportSummary from "../components/export-summary";
+import History from "../components/history";
+import Notifications from "../components/notifications";
+import Profile from "../components/profile";
 
 export default function Dashboard() {
   return (
     <>
-      <h1>hello</h1>
+      <SearchTaskBar />
+      <ExportSummary />
+      <History />
+      <Notifications />
+      <Profile />
     </>
   );
 }
