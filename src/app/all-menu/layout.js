@@ -10,7 +10,7 @@ import Profile from "../components/profile";
 export default function AllMenuLayout({ children }) {
   return (
     <div className="flex flex-wrap">
-      <header className="w-full p-2 flex">
+      <header className="w-full p-2 flex items-center">
         <Image
           src="/img/timeyfi-logo.webp"
           alt="Logo de l'application Timeyfi"
@@ -19,7 +19,7 @@ export default function AllMenuLayout({ children }) {
           priority
           className="basis-1/6 max-h-12 object-contain"
         />
-        <nav className="flex justify-between basis-5/6 bg-white p-3 rounded-2xl">
+        <nav className="grid grid-cols-[50%_20%_10%_10%_10%] basis-5/6 bg-white rounded-2xl">
           <SearchTaskBar />
           <ExportSummary />
           <History />
