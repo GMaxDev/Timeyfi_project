@@ -6,7 +6,7 @@ export default function SearchTaskBar() {
       <Search className="text-gray-400" />
       <input
         type="search"
-        placeholder="Chercher une tâche"
+        placeholder="Chercher une tâche ..."
         className="w-full focus:outline-none"
       />
     </div>
