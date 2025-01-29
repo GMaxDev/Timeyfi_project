@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { HomeIcon } from "@heroicons/react/24/outline";
 
 import SearchTaskBar from "@/app/components/search-task-bar";
 import ExportSummary from "../components/export-summary";
 import History from "../components/history";
 import Notifications from "../components/notifications";
 import Profile from "../components/profile";
+import Section from "../components/section";
 
 export default function AllMenuLayout({ children }) {
   return (
@@ -19,27 +21,39 @@ export default function AllMenuLayout({ children }) {
           priority
           className="basis-1/6 max-h-12 object-contain"
         />
-        <nav className="flex basis-5/6 bg-white rounded-2xl">
-          <SearchTaskBar className="w-full"/>
-          <ExportSummary className="min-w-52"/>
-          <History className="min-w-12"/>
-          <Notifications className="min-w-12"/>
-          <Profile className="min-w-12"/>
+        <nav className="flex basis-5/6 bg-white rounded-2xl p-2 gap-2">
+          <SearchTaskBar className="w-full" />
+          <ExportSummary className="min-w-52" />
+          <History className="min-w-12" />
+          <Notifications className="min-w-12" />
+          <Profile className="min-w-12" />
         </nav>
       </header>
-      <aside className="basis-1/6 bg-green-500">
-        <ul>
+      <aside className="basis-1/6 bg-white rounded-2xl p-4">
+        <ul className="flex flex-col gap-y-6">
           <li>
-            <Link href="/all-menu/dashboard">dashboard</Link>
+            <Section
+              icon="Dashboard"
+              link="/all-menu/dashboard"
+              name="Dashboard"
+            />
           </li>
           <li>
-            <Link href="/all-menu/list">list</Link>
+            <Section icon="ClipboardIcon" link="/all-menu/list" name="List" />
           </li>
           <li>
-            <Link href="/all-menu/calendar">calendar</Link>
+            <Section
+              icon="CalendarIcon"
+              link="/all-menu/calendar"
+              name="Calendar"
+            />
           </li>
           <li>
-            <Link href="/all-menu/messages">messages</Link>
+            <Section
+              icon="EnvelopeIcon"
+              link="/all-menu/messages"
+              name="Messages"
+            />
           </li>
         </ul>
       </aside>

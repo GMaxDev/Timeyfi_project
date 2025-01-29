@@ -1,7 +1,7 @@
 export default function Messages() {
   return (
     <>
-      <h2>list</h2>
+      <h2>messages</h2>
     </>
   );
 }
