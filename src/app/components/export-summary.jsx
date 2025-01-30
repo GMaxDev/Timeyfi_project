@@ -5,7 +5,7 @@ import { ChevronDownIcon, ArrowUpTrayIcon } from "@heroicons/react/20/solid";
 export default function ExportSummary({className=""}) {
   return (
     <Popover className={`relative flex border-2 rounded-2xl items-center px-4 ${className}`}>
-      <PopoverButton className="relative flex justify-between w-full focus:outline-none data-[active]:text-blue-500">
+      <PopoverButton className="relative flex justify-between w-full focus:outline-none data-[active]:text-teal-600">
       <ArrowUpTrayIcon className="size-5 transition-transform duration-200 ease-in-out data-[open]:rotate-180" />
         Export Summary
         <ChevronDownIcon className="size-5 transition-transform duration-200 ease-in-out data-[open]:rotate-180" />

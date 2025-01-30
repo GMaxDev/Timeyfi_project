@@ -11,26 +11,17 @@ import Section from "../components/section";
 
 export default function AllMenuLayout({ children }) {
   return (
-    <div className="flex flex-wrap">
-      <header className="w-full p-2 flex items-center">
+    <div className="flex">
+      <aside className="max-w-36 mx-4">
         <Image
           src="/img/timeyfi-logo.webp"
           alt="Logo de l'application Timeyfi"
           width={193}
           height={47}
           priority
-          className="basis-1/6 max-h-12 object-contain"
+          className="max-w-36 object-contain py-4"
         />
-        <nav className="flex basis-5/6 bg-white rounded-2xl p-2 gap-2">
-          <SearchTaskBar className="w-full" />
-          <ExportSummary className="min-w-52" />
-          <History className="min-w-12" />
-          <Notifications className="min-w-12" />
-          <Profile className="min-w-12" />
-        </nav>
-      </header>
-      <aside className="basis-1/6 bg-white rounded-2xl p-4">
-        <ul className="flex flex-col gap-y-6">
+        <ul className="flex flex-col gap-y-6 bg-white rounded-2xl p-4">
           <li>
             <Section
               icon="Dashboard"
@@ -57,7 +48,19 @@ export default function AllMenuLayout({ children }) {
           </li>
         </ul>
       </aside>
-      <main className="basis-5/6 bg-red-500">{children}</main>
+      <div className="flex flex-col w-full">
+        <header className="w-full pb-2 flex items-center">
+          <nav className="flex w-full bg-white rounded-2xl p-2 gap-2">
+            <SearchTaskBar className="w-full" />
+            <ExportSummary className="min-w-52" />
+            <History className="min-w-12" />
+            <Notifications className="min-w-12" />
+            <Profile className="min-w-12" />
+          </nav>
+        </header>
+        <main className="w-full bg-red-500">{children}</main>
+      </div>
     </div>
   );
 }
+2;
