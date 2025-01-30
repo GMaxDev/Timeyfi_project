@@ -11,7 +11,7 @@ import Section from "../components/section";
 
 export default function AllMenuLayout({ children }) {
   return (
-    <div className="flex">
+    <div className="flex font-galey">
       <aside className="max-w-36 mx-4">
         <Image
           src="/img/timeyfi-logo.webp"
@@ -48,7 +48,7 @@ export default function AllMenuLayout({ children }) {
           </li>
         </ul>
       </aside>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full pr-4">
         <header className="w-full pb-2 flex items-center">
           <nav className="flex w-full bg-white rounded-2xl p-2 gap-2">
             <SearchTaskBar className="w-full" />
