@@ -11,7 +11,7 @@ import Section from "../components/section";
 
 export default function AllMenuLayout({ children }) {
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap font-galey">
       <header className="w-full p-2 flex items-center">
         <Image
           src="/img/timeyfi-logo.webp"
@@ -57,7 +57,7 @@ export default function AllMenuLayout({ children }) {
           </li>
         </ul>
       </aside>
-      <main className="basis-5/6 bg-red-500">{children}</main>
+      <main className="basis-5/6 bg-red-500 ">{children}</main>
     </div>
   );
 }

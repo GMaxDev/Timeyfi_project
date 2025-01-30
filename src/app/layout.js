@@ -1,5 +1,16 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const galey = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Galey-Semi-Bold.woff2",
+      weight: "400",
+    },
+  ],
+  variable: "--font-galey"
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +29,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${galey.variable}`}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-100 text-black`}
       >
