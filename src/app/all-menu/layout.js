@@ -48,7 +48,7 @@ export default function AllMenuLayout({ children }) {
           </li>
         </ul>
       </aside>
-      <div className="flex flex-col w-full pr-4">
+      <div className="flex flex-col w-full pr-4 h-screen">
         <header className="w-full pb-2 flex items-center">
           <nav className="flex w-full bg-white rounded-2xl p-2 gap-2">
             <SearchTaskBar className="w-full" />
@@ -58,9 +58,8 @@ export default function AllMenuLayout({ children }) {
             <Profile className="min-w-12 z-10" />
           </nav>
         </header>
-        <main className="w-full bg-red-500">{children}</main>
+        <main className="flex-1 w-full bg-red-500">{children}</main>
       </div>
     </div>
   );
 }
-2;
