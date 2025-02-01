@@ -52,10 +52,10 @@ export default function AllMenuLayout({ children }) {
         <header className="w-full pb-2 flex items-center">
           <nav className="flex w-full bg-white rounded-2xl p-2 gap-2">
             <SearchTaskBar className="w-full" />
-            <ExportSummary className="min-w-52" />
-            <History className="min-w-12" />
-            <Notifications className="min-w-12" />
-            <Profile className="min-w-12" />
+            <ExportSummary className="min-w-52  z-10" />
+            <History className="min-w-12 z-10" />
+            <Notifications className="min-w-12 z-10" />
+            <Profile className="min-w-12 z-10" />
           </nav>
         </header>
         <main className="w-full bg-red-500">{children}</main>
