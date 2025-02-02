@@ -4,7 +4,7 @@ import Bloc from "@/app/components/bloc";
 import { useEffect, useRef, useState } from "react";
 
 export default function Dashboard() {
-  // Etat des blocs de base
+  // État initial des blocs
   const [blocs, setBlocs] = useState([
     { id: 1, posUnitX: 0, posUnitY: 0, blocSizeX: 1, blocSizeY: 1 },
     { id: 2, posUnitX: 2, posUnitY: 0, blocSizeX: 1, blocSizeY: 1 },
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   // Référence pour le conteneur de la grille
   const gridRef = useRef(null);
-  // Etat pour stocker la taille d'une cellule
+  // État pour stocker la taille d'une cellule
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
 
   // Au montage, on calcule la taille d'une cellule
@@ -25,7 +25,6 @@ export default function Dashboard() {
     if (gridRef.current) {
       const gridWidth = gridRef.current.clientWidth;
       const gridHeight = gridRef.current.clientHeight;
-
       setCellSize({
         width: gridWidth / 6,
         height: gridHeight / 6,
@@ -33,12 +32,23 @@ export default function Dashboard() {
     }
   }, []);
 
-  // Fonction de mise à jour de la position d'un bloc (corrigée)
+  // Mise à jour de la position d'un bloc
   const updateBlocPosition = (id, newPosUnitX, newPosUnitY) => {
     setBlocs((prev) =>
       prev.map((bloc) =>
         bloc.id === id
           ? { ...bloc, posUnitX: newPosUnitX, posUnitY: newPosUnitY }
+          : bloc
+      )
+    );
+  };
+
+  // Mise à jour de la taille d'un bloc
+  const updateBlocSize = (id, newSizeX, newSizeY) => {
+    setBlocs((prev) =>
+      prev.map((bloc) =>
+        bloc.id === id
+          ? { ...bloc, blocSizeX: newSizeX, blocSizeY: newSizeY }
           : bloc
       )
     );
@@ -59,6 +69,7 @@ export default function Dashboard() {
           blocSizeY={bloc.blocSizeY}
           cellSize={cellSize}
           updatePosition={updateBlocPosition}
+          updateSize={updateBlocSize}
         />
       ))}
     </div>
