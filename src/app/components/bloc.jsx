@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
-// Fonction utilitaire pour appliquer les contraintes de taille
+// Fonction utilitaire pour appliquer les contraintes de valeur
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 export default function Bloc({
@@ -12,18 +12,24 @@ export default function Bloc({
   posUnitX = 0,
   posUnitY = 0,
   cellSize,       // { width, height } passé depuis le Dashboard
-  updatePosition, // fonction pour mettre à jour la position (drag)
-  updateSize,     // fonction pour mettre à jour la taille (resize)
+  updatePosition, // fonction pour le drag
+  updateSize,     // fonction pour le resize
+  forceUpdate,    // propriété pour forcer le re-render en cas de collision
 }) {
-  // Référence vers l'élément DOM du bloc
   const blocRef = useRef(null);
-  // Référence pour stocker la position de départ du drag
   const dragStartRef = useRef(null);
-  // Référence pour stocker la position de départ du resize
   const resizeStartRef = useRef(null);
 
+  // Synchronisation du style avec le state, on ajoute forceUpdate dans les dépendances
+  useEffect(() => {
+    if (blocRef.current) {
+      blocRef.current.style.gridColumn = `${posUnitX + 1} / span ${blocSizeX}`;
+      blocRef.current.style.gridRow = `${posUnitY + 1} / span ${blocSizeY}`;
+    }
+  }, [posUnitX, posUnitY, blocSizeX, blocSizeY, forceUpdate]);
+
   // ------------------------
-  // GESTION DU DRAG (déjà en place)
+  // GESTION DU DRAG
   // ------------------------
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -43,8 +49,11 @@ export default function Bloc({
     const offsetY = e.clientY - dragStartRef.current.mouseY;
     const offsetCellsX = Math.round(offsetX / cellSize.width);
     const offsetCellsY = Math.round(offsetY / cellSize.height);
-    const newPosUnitX = dragStartRef.current.initPosX + offsetCellsX;
-    const newPosUnitY = dragStartRef.current.initPosY + offsetCellsY;
+    let newPosUnitX = dragStartRef.current.initPosX + offsetCellsX;
+    let newPosUnitY = dragStartRef.current.initPosY + offsetCellsY;
+    // Limiter pour rester dans la grille (6 colonnes et 6 lignes)
+    newPosUnitX = clamp(newPosUnitX, 0, 6 - blocSizeX);
+    newPosUnitY = clamp(newPosUnitY, 0, 6 - blocSizeY);
     if (blocRef.current) {
       blocRef.current.style.gridColumn = `${newPosUnitX + 1} / span ${blocSizeX}`;
       blocRef.current.style.gridRow = `${newPosUnitY + 1} / span ${blocSizeY}`;
@@ -57,8 +66,10 @@ export default function Bloc({
     const offsetY = e.clientY - dragStartRef.current.mouseY;
     const offsetCellsX = Math.round(offsetX / cellSize.width);
     const offsetCellsY = Math.round(offsetY / cellSize.height);
-    const newPosUnitX = dragStartRef.current.initPosX + offsetCellsX;
-    const newPosUnitY = dragStartRef.current.initPosY + offsetCellsY;
+    let newPosUnitX = dragStartRef.current.initPosX + offsetCellsX;
+    let newPosUnitY = dragStartRef.current.initPosY + offsetCellsY;
+    newPosUnitX = clamp(newPosUnitX, 0, 6 - blocSizeX);
+    newPosUnitY = clamp(newPosUnitY, 0, 6 - blocSizeY);
     updatePosition(id, newPosUnitX, newPosUnitY);
     dragStartRef.current = null;
     document.removeEventListener("mousemove", handleMouseMove);
@@ -69,10 +80,8 @@ export default function Bloc({
   // GESTION DU RESIZE
   // ------------------------
   const handleResizeMouseDown = (e) => {
-    // On ne veut pas déclencher le drag en même temps que le resize
     e.stopPropagation();
     e.preventDefault();
-    // Stocker les infos de départ pour le resize
     resizeStartRef.current = {
       mouseX: e.clientX,
       mouseY: e.clientY,
@@ -85,16 +94,14 @@ export default function Bloc({
 
   const handleResizeMouseMove = (e) => {
     if (!resizeStartRef.current || !cellSize.width || !cellSize.height) return;
-    // Calcul de l'offset par rapport au point de départ
     const offsetX = e.clientX - resizeStartRef.current.mouseX;
     const offsetY = e.clientY - resizeStartRef.current.mouseY;
-    // Conversion de l'offset en nombre de cellules
     const offsetCellsX = Math.round(offsetX / cellSize.width);
     const offsetCellsY = Math.round(offsetY / cellSize.height);
-    // Calcul de la nouvelle taille avec contraintes (min=1, max=2)
-    const newSizeX = clamp(resizeStartRef.current.initSizeX + offsetCellsX, 1, 2);
-    const newSizeY = clamp(resizeStartRef.current.initSizeY + offsetCellsY, 1, 2);
-    // Mise à jour visuelle du bloc
+    let newSizeX = resizeStartRef.current.initSizeX + offsetCellsX;
+    let newSizeY = resizeStartRef.current.initSizeY + offsetCellsY;
+    newSizeX = clamp(newSizeX, 1, Math.min(2, 6 - posUnitX));
+    newSizeY = clamp(newSizeY, 1, Math.min(3, 6 - posUnitY));
     if (blocRef.current) {
       blocRef.current.style.gridColumn = `${posUnitX + 1} / span ${newSizeX}`;
       blocRef.current.style.gridRow = `${posUnitY + 1} / span ${newSizeY}`;
@@ -107,9 +114,10 @@ export default function Bloc({
     const offsetY = e.clientY - resizeStartRef.current.mouseY;
     const offsetCellsX = Math.round(offsetX / cellSize.width);
     const offsetCellsY = Math.round(offsetY / cellSize.height);
-    const newSizeX = clamp(resizeStartRef.current.initSizeX + offsetCellsX, 1, 2);
-    const newSizeY = clamp(resizeStartRef.current.initSizeY + offsetCellsY, 1, 2);
-    // Mettre à jour la taille via le callback du parent
+    let newSizeX = resizeStartRef.current.initSizeX + offsetCellsX;
+    let newSizeY = resizeStartRef.current.initSizeY + offsetCellsY;
+    newSizeX = clamp(newSizeX, 1, Math.min(2, 6 - posUnitX));
+    newSizeY = clamp(newSizeY, 1, Math.min(3, 6 - posUnitY));
     updateSize(id, newSizeX, newSizeY);
     resizeStartRef.current = null;
     document.removeEventListener("mousemove", handleResizeMouseMove);
@@ -124,14 +132,13 @@ export default function Bloc({
         gridColumn: `${posUnitX + 1} / span ${blocSizeX}`,
         gridRow: `${posUnitY + 1} / span ${blocSizeY}`,
         cursor: "grab",
-        position: "relative", // Nécessaire pour positionner le handle de resize
+        position: "relative",
       }}
       className="bg-slate-600 p-1 rounded-3xl z-0"
     >
       <div className="bg-slate-100 rounded-3xl w-full h-full p-3 select-none">
         <h2>test test bloc page test test</h2>
       </div>
-      {/* Handle de redimensionnement placé en bas à droite */}
       <div
         onMouseDown={handleResizeMouseDown}
         style={{
@@ -139,8 +146,8 @@ export default function Bloc({
           height: "16px",
           background: "gray",
           position: "absolute",
-          bottom: "10px",
-          right: "20px",
+          bottom: "4px",
+          right: "4px",
           cursor: "se-resize",
           borderRadius: "4px",
         }}
